@@ -226,9 +226,9 @@ export default function WidgetAppearance({ onShowSaveBar, isSubmit }) {
                   label="Required message text color"
                   value={widgetAppearance?.requiredMessageColor}
                   onChange={(e) => {
-                    handleChangeWidgetAppearance("requireMessColor", e);
+                    handleChangeWidgetAppearance("requiredMessageColor", e);
                   }}
-                  error={handleValidate("titleColor")}
+                  error={handleValidate("requiredMessageColor")}
                   suffix={
                     <div
                       className="color-picker__box"
