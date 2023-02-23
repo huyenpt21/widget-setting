@@ -1,38 +1,46 @@
-.App {
-  text-align: center;
+.content {
+  margin-top: 48px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.main-color {
+  color: rgba(174, 43, 76, 1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.theme-color {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: flex-end;
 }
 
-.App-link {
-  color: #61dafb;
+.color-picker {
+  position: absolute;
+  top: 40px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Polaris-TextField__Suffix {
+  margin-right: 0 !important;
+}
+
+.color-picker__box {
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 5px;
+  background-color: #000;
+}
+
+.color-picker__input {
+  opacity: 0;
+}
+
+.section__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.Polaris-Tabs__Tab--selected .Polaris-Tabs__Title::before,
+.Polaris-Tabs__Tab--selected:focus .Polaris-Tabs__Title::before {
+  background-color: var(--p-text-critical) !important;
 }

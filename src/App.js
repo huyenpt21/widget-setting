@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { ContextualSaveBar, Frame, Layout, Page } from "@shopify/polaris";
+import WidgetAppearance from "components/widgetAppearence";
+import WidgetText from "components/widgetText";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { discardChange } from "widgetSettingSlice";
+import "./App.css";
+import WidgetPosition from "./components/widgetPosition";
 
 function App() {
+  const dispatch = useDispatch();
+  const widgetSetting = useSelector((state) => state?.widgetSetting);
+  const handleSubmit = useCallback(() => {
+    console.log(222, widgetSetting);
+  }, [widgetSetting]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Page narrowWidth>
+      <Frame>
+        <ContextualSaveBar
+          alignContentFlush
+          message="Unsaved changes"
+          saveAction={{
+            onAction: handleSubmit,
+          }}
+          discardAction={{
+            onAction: () => {
+              dispatch(discardChange());
+            },
+          }}
+        />
+        <div className="content">
+          <Layout>
+            <WidgetPosition />
+            <WidgetAppearance />
+            <WidgetText />
+          </Layout>
+        </div>
+      </Frame>
+    </Page>
   );
 }
 
