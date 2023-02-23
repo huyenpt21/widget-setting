@@ -12,19 +12,27 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setWidgetPositionSlice } from "widgetSettingSlice";
 
-export default function WidgetPosition() {
+export default function WidgetPosition({ onShowSaveBar }) {
   const dispatch = useDispatch();
   const defaultValue = useSelector(
     (state) => state.widgetSetting.widgetPosition
   );
   const [widgetPosition, setWidgetPosition] = useState(defaultValue);
   const [isOpenWidgetSetting, setIsOpenWidgetSetting] = useState(true);
-  const handleChangeWidgetPosition = useCallback((key, value) => {
-    setWidgetPosition((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  }, []);
+  const handleChangeWidgetPosition = useCallback(
+    (key, value) => {
+      onShowSaveBar(true);
+      setWidgetPosition((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+    },
+    [onShowSaveBar]
+  );
+
+  useEffect(() => {
+    setWidgetPosition(defaultValue);
+  }, [defaultValue]);
 
   useEffect(() => {
     dispatch(setWidgetPositionSlice(widgetPosition));

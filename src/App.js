@@ -1,7 +1,7 @@
 import { ContextualSaveBar, Frame, Layout, Page } from "@shopify/polaris";
 import WidgetAppearance from "components/widgetAppearence";
 import WidgetText from "components/widgetText";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { discardChange } from "widgetSettingSlice";
 import "./App.css";
@@ -10,30 +10,40 @@ import WidgetPosition from "./components/widgetPosition";
 function App() {
   const dispatch = useDispatch();
   const widgetSetting = useSelector((state) => state?.widgetSetting);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [isShowSaveBar, setIsShowSaveBar] = useState(false);
   const handleSubmit = useCallback(() => {
-    console.log(222, widgetSetting);
+    setIsSubmit(true);
+    console.log("Result", widgetSetting);
   }, [widgetSetting]);
 
   return (
     <Page narrowWidth>
       <Frame>
-        <ContextualSaveBar
-          alignContentFlush
-          message="Unsaved changes"
-          saveAction={{
-            onAction: handleSubmit,
-          }}
-          discardAction={{
-            onAction: () => {
-              dispatch(discardChange());
-            },
-          }}
-        />
-        <div className="content">
+        {isShowSaveBar && (
+          <ContextualSaveBar
+            alignContentFlush
+            message="Unsaved changes"
+            saveAction={{
+              onAction: handleSubmit,
+            }}
+            discardAction={{
+              onAction: () => {
+                dispatch(discardChange());
+                setIsShowSaveBar(false);
+                setIsSubmit(false);
+              },
+            }}
+          />
+        )}
+        <div style={isShowSaveBar ? { marginTop: "48px" } : {}}>
           <Layout>
-            <WidgetPosition />
-            <WidgetAppearance />
-            <WidgetText />
+            <WidgetPosition onShowSaveBar={setIsShowSaveBar} />
+            <WidgetAppearance
+              isSubmit={isSubmit}
+              onShowSaveBar={setIsShowSaveBar}
+            />
+            <WidgetText isSubmit={isSubmit} onShowSaveBar={setIsShowSaveBar} />
           </Layout>
         </div>
       </Frame>

@@ -23,23 +23,63 @@ import { setWidgetAppearanceSlice } from "widgetSettingSlice";
 
 import optionsLanguage from "./languages.json";
 
-export default function WidgetAppearance() {
+export default function WidgetAppearance({ onShowSaveBar, isSubmit }) {
   const dispatch = useDispatch();
   const defaultValue = useSelector(
     (state) => state.widgetSetting.widgetAppearance
   );
   const [widgetAppearance, setWidgetAppearance] = useState(defaultValue);
 
-  const handleChangeWidgetAppearance = useCallback((key, value) => {
-    setWidgetAppearance((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  }, []);
+  const handleChangeWidgetAppearance = useCallback(
+    (key, value) => {
+      onShowSaveBar(true);
+      setWidgetAppearance((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+    },
+    [onShowSaveBar]
+  );
+
+  useEffect(() => {
+    setWidgetAppearance(defaultValue);
+  }, [defaultValue]);
   const [isOpenWidgetAppearance, setIsOpenWidgetAppearance] = useState(true);
   useEffect(() => {
     dispatch(setWidgetAppearanceSlice(widgetAppearance));
   }, [dispatch, widgetAppearance]);
+
+  const isValidHexaCode = useCallback((str) => {
+    if (str[0] !== "#") return false;
+
+    if (!(str.length === 4 || str.length === 7)) return false;
+
+    for (let i = 1; i < str.length; i++)
+      if (
+        !(
+          (str[i].charCodeAt(0) <= "0".charCodeAt(0) &&
+            str[i].charCodeAt(0) <= 9) ||
+          (str[i].charCodeAt(0) >= "a".charCodeAt(0) &&
+            str[i].charCodeAt(0) <= "f".charCodeAt(0)) ||
+          str[i].charCodeAt(0) >= "A".charCodeAt(0) ||
+          str[i].charCodeAt(0) <= "F".charCodeAt(0)
+        )
+      )
+        return false;
+
+    return true;
+  }, []);
+
+  const handleValidate = useCallback(
+    (fieldName) => {
+      const isValidHexColor = isValidHexaCode(widgetAppearance[fieldName]);
+      if (isSubmit && !isValidHexColor) {
+        return "Invalid hex color format";
+      }
+      return false;
+    },
+    [isSubmit, isValidHexaCode, widgetAppearance]
+  );
 
   return (
     <>
@@ -147,6 +187,7 @@ export default function WidgetAppearance() {
                       </div>
                     </div>
                   }
+                  error={handleValidate("themeColor")}
                   label="Theme color"
                   value={widgetAppearance?.themeColor}
                   onChange={(e) => {
@@ -162,6 +203,7 @@ export default function WidgetAppearance() {
                   onChange={(e) => {
                     handleChangeWidgetAppearance("titleColor", e);
                   }}
+                  error={handleValidate("titleColor")}
                   suffix={
                     <div
                       className="color-picker__box"
@@ -186,6 +228,7 @@ export default function WidgetAppearance() {
                   onChange={(e) => {
                     handleChangeWidgetAppearance("requireMessColor", e);
                   }}
+                  error={handleValidate("titleColor")}
                   suffix={
                     <div
                       className="color-picker__box"

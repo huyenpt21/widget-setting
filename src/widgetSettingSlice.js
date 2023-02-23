@@ -9,7 +9,7 @@ const initialState = {
     layout: 1,
     calendarLayout: 1,
     isAlwaysOpenCalendar: false,
-    calendarLanguage: 1,
+    calendarLanguage: "ab",
     firstDayOfCalendar: 1,
     dateFormat: 1,
     themeColor: "#000000",

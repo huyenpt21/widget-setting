@@ -15,7 +15,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setWidgetPositionSlice } from "widgetSettingSlice";
 
-export default function WidgetText() {
+export default function WidgetText({ onShowSaveBar, isSubmit }) {
   const dispatch = useDispatch();
   const defaultValue = useSelector((state) => state.widgetSetting.widgetText);
   const [selectedTabs, setSelected] = useState(0);
@@ -26,16 +26,65 @@ export default function WidgetText() {
     (selectedTabIndex) => setSelected(selectedTabIndex),
     []
   );
-  const handleChangeWidgetText = useCallback((key, value) => {
-    setWidgetText((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  }, []);
+  const handleChangeWidgetText = useCallback(
+    (key, value) => {
+      onShowSaveBar(true);
+      setWidgetText((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+    },
+    [onShowSaveBar]
+  );
+
+  useEffect(() => {
+    setWidgetText(defaultValue);
+  }, [defaultValue]);
 
   useEffect(() => {
     dispatch(setWidgetPositionSlice(widgetText));
   }, [dispatch, widgetText]);
+
+  const handleValidateField = useCallback(
+    (fieldName) => {
+      if (isSubmit && widgetText[fieldName].trim() === "") {
+        switch (fieldName) {
+          case "title": {
+            return "Title is required";
+          }
+          case "deliveryDateLabel": {
+            return "Delivery date label is required";
+          }
+          case "deliveryDateTitle": {
+            return "Delivery date title is required";
+          }
+          case "deliveryTimeTitle": {
+            return "Delivery time title is required";
+          }
+          case "requestMessageText": {
+            return "Required message text is required";
+          }
+          case "storePickupLabel": {
+            return "Store pickup label";
+          }
+          case "messageTextRequirePickupLocation": {
+            return "Message text to require buyer to choose a pickup location";
+          }
+          case "storePickupDateTitle": {
+            return "Store pickup date title";
+          }
+          case "storePickupTimeTitle": {
+            return "Store pickup time title";
+          }
+
+          default: {
+          }
+        }
+      }
+      return false;
+    },
+    [widgetText, isSubmit]
+  );
   return (
     <Layout.Section fullWidth>
       <Card
@@ -78,6 +127,7 @@ export default function WidgetText() {
                   label="Title"
                   value={widgetText?.title}
                   onChange={(e) => handleChangeWidgetText("title", e)}
+                  error={handleValidateField("title")}
                 />
                 <TextField
                   label="Delivery date label"
@@ -85,6 +135,7 @@ export default function WidgetText() {
                   onChange={(e) =>
                     handleChangeWidgetText("deliveryDateLabel", e)
                   }
+                  error={handleValidateField("deliveryDateLabel")}
                 />
                 <TextField
                   label="Delivery date title"
@@ -92,6 +143,7 @@ export default function WidgetText() {
                   onChange={(e) =>
                     handleChangeWidgetText("deliveryDateTitle", e)
                   }
+                  error={handleValidateField("deliveryDateTitle")}
                 />
                 <TextField
                   label="Delivery time title"
@@ -99,6 +151,7 @@ export default function WidgetText() {
                   onChange={(e) =>
                     handleChangeWidgetText("deliveryTimeTitle", e)
                   }
+                  error={handleValidateField("deliveryTimeTitle")}
                 />
                 <TextField
                   label="Required message text"
@@ -106,6 +159,7 @@ export default function WidgetText() {
                   onChange={(e) =>
                     handleChangeWidgetText("requestMessageText", e)
                   }
+                  error={handleValidateField("requestMessageText")}
                 />
               </FormLayout>
             )}
@@ -117,6 +171,7 @@ export default function WidgetText() {
                   onChange={(e) =>
                     handleChangeWidgetText("storePickupLabel", e)
                   }
+                  error={handleValidateField("storePickupLabel")}
                 />
                 <TextField
                   label="Message text to require buyer to choose a pickup location"
@@ -127,6 +182,9 @@ export default function WidgetText() {
                       e
                     )
                   }
+                  error={handleValidateField(
+                    "messageTextRequirePickupLocation"
+                  )}
                 />
                 <TextField
                   label="Store pickup date title"
@@ -134,6 +192,7 @@ export default function WidgetText() {
                   onChange={(e) =>
                     handleChangeWidgetText("storePickupDateTitle", e)
                   }
+                  error={handleValidateField("storePickupDateTitle")}
                 />
                 <TextField
                   label="Store pickup time title"
@@ -141,6 +200,7 @@ export default function WidgetText() {
                   onChange={(e) =>
                     handleChangeWidgetText("storePickupTimeTitle", e)
                   }
+                  error={handleValidateField("storePickupTimeTitle")}
                 />
                 <TextField
                   label="Required message text"
@@ -148,6 +208,7 @@ export default function WidgetText() {
                   onChange={(e) =>
                     handleChangeWidgetText("requestMessageText", e)
                   }
+                  error={handleValidateField("requestMessageText")}
                 />
               </FormLayout>
             )}
