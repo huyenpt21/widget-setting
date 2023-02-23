@@ -23,7 +23,11 @@ import { setWidgetAppearanceSlice } from "widgetSettingSlice";
 
 import optionsLanguage from "./languages.json";
 
-export default function WidgetAppearance({ onShowSaveBar, isSubmit }) {
+export default function WidgetAppearance({
+  onShowSaveBar,
+  isSubmit,
+  isDiscard,
+}) {
   const dispatch = useDispatch();
   const defaultValue = useSelector(
     (state) => state.widgetSetting.widgetAppearance
@@ -42,8 +46,18 @@ export default function WidgetAppearance({ onShowSaveBar, isSubmit }) {
   );
 
   useEffect(() => {
-    setWidgetAppearance(defaultValue);
-  }, [defaultValue]);
+    setWidgetAppearance({
+      layout: 1,
+      calendarLayout: 1,
+      isAlwaysOpenCalendar: false,
+      calendarLanguage: "ab",
+      firstDayOfCalendar: 1,
+      dateFormat: 1,
+      themeColor: "#000000",
+      titleColor: "#000000",
+      requiredMessageColor: "#000000",
+    });
+  }, [isDiscard]);
   const [isOpenWidgetAppearance, setIsOpenWidgetAppearance] = useState(true);
   useEffect(() => {
     dispatch(setWidgetAppearanceSlice(widgetAppearance));

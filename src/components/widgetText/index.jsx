@@ -15,7 +15,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setWidgetPositionSlice } from "widgetSettingSlice";
 
-export default function WidgetText({ onShowSaveBar, isSubmit }) {
+export default function WidgetText({ onShowSaveBar, isDiscard, isSubmit }) {
   const dispatch = useDispatch();
   const defaultValue = useSelector((state) => state.widgetSetting.widgetText);
   const [selectedTabs, setSelected] = useState(0);
@@ -38,8 +38,19 @@ export default function WidgetText({ onShowSaveBar, isSubmit }) {
   );
 
   useEffect(() => {
-    setWidgetText(defaultValue);
-  }, [defaultValue]);
+    setWidgetText({
+      title: "",
+      deliveryDateLabel: "",
+      deliveryDateTitle: "",
+      deliveryTimeTitle: "",
+      requestMessageText: "",
+      storePickupLabel: "",
+      messageTextRequirePickupLocation: "",
+      storePickupDateTitle: "",
+      storePickupTimeTitle: "",
+      requireMessageText: "",
+    });
+  }, [isDiscard]);
 
   useEffect(() => {
     dispatch(setWidgetPositionSlice(widgetText));

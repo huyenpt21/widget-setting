@@ -43,35 +43,6 @@ export const widgetSettingSlice = createSlice({
     setWidgetTextSlice: (state, action) => {
       state.widgetText = action.payload.widgetText;
     },
-    discardChange: (state) => {
-      state.widgetPosition = {
-        isShowCalendar: false,
-        isRequireDeliveryDate: false,
-      };
-      state.widgetAppearance = {
-        layout: 1,
-        calendarLayout: 1,
-        isAlwaysOpenCalendar: false,
-        calendarLanguage: 1,
-        firstDayOfCalendar: 1,
-        dateFormat: 1,
-        themeColor: "#000000",
-        titleColor: "#000000",
-        requiredMessageColor: "#000000",
-      };
-      state.widgetText = {
-        title: "",
-        deliveryDateLabel: "",
-        deliveryDateTitle: "",
-        deliveryTimeTitle: "",
-        requestMessageText: "",
-        storePickupLabel: "",
-        messageTextRequirePickupLocation: "",
-        storePickupDateTitle: "",
-        storePickupTimeTitle: "",
-        requireMessageText: "",
-      };
-    },
   },
 });
 
@@ -79,6 +50,5 @@ export const {
   setWidgetPositionSlice,
   setWidgetAppearanceSlice,
   setWidgetTextSlice,
-  discardChange,
 } = widgetSettingSlice.actions;
 export default widgetSettingSlice.reducer;

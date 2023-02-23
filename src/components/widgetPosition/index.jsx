@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setWidgetPositionSlice } from "widgetSettingSlice";
 
-export default function WidgetPosition({ onShowSaveBar }) {
+export default function WidgetPosition({ onShowSaveBar, isDiscard }) {
   const dispatch = useDispatch();
   const defaultValue = useSelector(
     (state) => state.widgetSetting.widgetPosition
@@ -31,8 +31,11 @@ export default function WidgetPosition({ onShowSaveBar }) {
   );
 
   useEffect(() => {
-    setWidgetPosition(defaultValue);
-  }, [defaultValue]);
+    setWidgetPosition({
+      isShowCalendar: false,
+      isRequireDeliveryDate: false,
+    });
+  }, [isDiscard]);
 
   useEffect(() => {
     dispatch(setWidgetPositionSlice(widgetPosition));

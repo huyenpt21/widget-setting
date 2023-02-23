@@ -11,11 +11,19 @@ function App() {
   const dispatch = useDispatch();
   const widgetSetting = useSelector((state) => state?.widgetSetting);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isDiscard, setIsDiscard] = useState(false);
   const [isShowSaveBar, setIsShowSaveBar] = useState(false);
   const handleSubmit = useCallback(() => {
     setIsSubmit(true);
     console.log("Result", widgetSetting);
   }, [widgetSetting]);
+
+  const handleDiscard = useCallback(() => {
+    dispatch(discardChange());
+    setIsShowSaveBar(false);
+    setIsSubmit(false);
+    setIsDiscard(!isDiscard);
+  }, [dispatch, isDiscard]);
 
   return (
     <Page narrowWidth>
@@ -28,22 +36,26 @@ function App() {
               onAction: handleSubmit,
             }}
             discardAction={{
-              onAction: () => {
-                dispatch(discardChange());
-                setIsShowSaveBar(false);
-                setIsSubmit(false);
-              },
+              onAction: handleDiscard,
             }}
           />
         )}
         <div style={isShowSaveBar ? { marginTop: "48px" } : {}}>
           <Layout>
-            <WidgetPosition onShowSaveBar={setIsShowSaveBar} />
-            <WidgetAppearance
-              isSubmit={isSubmit}
+            <WidgetPosition
+              isDiscard={isDiscard}
               onShowSaveBar={setIsShowSaveBar}
             />
-            <WidgetText isSubmit={isSubmit} onShowSaveBar={setIsShowSaveBar} />
+            <WidgetAppearance
+              isSubmit={isSubmit}
+              isDiscard={isDiscard}
+              onShowSaveBar={setIsShowSaveBar}
+            />
+            <WidgetText
+              isSubmit={isSubmit}
+              isDiscard={isDiscard}
+              onShowSaveBar={setIsShowSaveBar}
+            />
           </Layout>
         </div>
       </Frame>
