@@ -2,13 +2,11 @@ import { ContextualSaveBar, Frame, Layout, Page } from "@shopify/polaris";
 import WidgetAppearance from "components/widgetAppearence";
 import WidgetText from "components/widgetText";
 import { useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { discardChange } from "widgetSettingSlice";
+import { useSelector } from "react-redux";
 import "./App.css";
 import WidgetPosition from "./components/widgetPosition";
 
 function App() {
-  const dispatch = useDispatch();
   const widgetSetting = useSelector((state) => state?.widgetSetting);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isDiscard, setIsDiscard] = useState(false);
@@ -19,11 +17,10 @@ function App() {
   }, [widgetSetting]);
 
   const handleDiscard = useCallback(() => {
-    dispatch(discardChange());
     setIsShowSaveBar(false);
     setIsSubmit(false);
     setIsDiscard(!isDiscard);
-  }, [dispatch, isDiscard]);
+  }, [isDiscard]);
 
   return (
     <Page narrowWidth>
